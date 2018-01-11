@@ -59,9 +59,9 @@ select last_name, department_name
   from employees
  cross join departments
 ;
--- 5.1Exercicios Criar uma consulta que gera os endere�os de todos os departamentos
+-- 5.1Exercicios Criar uma consulta que gera os endereços de todos os departamentos
 -- Use a tabela locations e countries
--- Mostre o ID do local, o endere�o, a cidade, o estado e o pa�s na sa�da
+-- Mostre o ID do local, o endereço, a cidade, o estado e o país na saída
 -- Usar natural Join
   select  location_id,  street_address, city, state_province,country_name
   from  locations
@@ -99,8 +99,8 @@ select e.last_name , e.employee_id,  m.last_name gerente, m.employee_id
      on (e1.department_id = e2.department_id and e1.employee_id <> e2.employee_id)
   order by 1,2,3
 ;
--- 5.7 Criar uma consulta para exibir o nome e a data de adminss�o
--- de todos func admitidos ap�s Davies
+-- 5.7 Criar uma consulta para exibir o nome e a data de adminssão
+-- de todos func admitidos após Davies
 select e.last_name sobrenome,  to_char(e.hire_date,'dd  month yyyy') admissao
   from employees e
  where e.hire_date > (select d.hire_date
@@ -109,4 +109,56 @@ select e.last_name sobrenome,  to_char(e.hire_date,'dd  month yyyy') admissao
  order by  e.hire_date
 
 ;
+
+-- Exercicio 3.12 - Consulta que exiba os 8 primeiros caracteres do sobrenome dos funcionários
+-- e indique os valores do salário com asterisco
+-- cada asterisco represanta mil dólares
+-- Organizar em ordem decrescente
+select Substr(last_name,1,8) primeiros_8,
+       salary salario,
+      trunc(salary/1000) qtdd_asteriscos,
+      rpad('*',trunc(salary/1000),'*') desejado,
+      Substr(last_name,1,8)||' '||rpad('*',trunc(salary/1000),'*') Reultado_final
+ from employees
+;
+--
+--
+--
+SELECT Count(*)
+  FROM employees
+;
+--
+--
+--
+SELECT Count(commission_pct)
+  FROM employees
+;
+--
+--
+--
+SELECT Count(DISTINCT (commission_pct))Contador
+  FROM employees
+;
+--
+--
+select department_id dpt_id, job_id, sum(salary)
+  from employees
+ group by department_id, job_id
+ ;
+--
+--
+select department_id, count(last_name )
+  from employees
+ group by department_id
+;
+select department_id, avg(salary)
+  from employees
+having avg(salary)> 8000
+ group by department_id
+;
+select department_id, avg(salary)
+  from employees
+having avg(salary)> 10000
+ group by department_id
+
 
