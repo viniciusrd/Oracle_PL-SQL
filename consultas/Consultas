@@ -1,0 +1,112 @@
+select  department_id, department_name, location_id, city
+  from  departments
+natural join locations
+;
+ select department_id, department_name, location_id, city
+   from departments
+natural join locations
+  where department_id in (20,50)
+;
+select l.city, d.department_name
+  from locations l join departments d using (location_id)
+ where location_id = 1400
+;
+select employees.employee_id, employees.last_name,
+       departments.location_id , department_id
+  from employees join departments
+ using (department_id )
+;
+
+select e.employee_id,     e.last_name, e.department_id,
+       d.department_id, d.location_id
+  from employees e join departments d
+    on (e.employee_id = d.department_id)
+;
+-- auto join na mesma tabela...
+select e.last_name empregado, m.last_name gerente
+  from employees e join employees m
+    on (e.manager_id = m.employee_id)
+;
+ select e.employee_id,     e.last_name, e.department_id,
+       d.department_id, d.location_id
+  from employees e join departments d
+    on (e.employee_id = d.department_id)
+   AND e.manager_id=149
+;
+select employee_id, city, department_name
+  from employees e
+  join departments d
+    on e.department_id = d.department_id
+  join locations l
+    on d.location_id = l.location_id
+;
+select e.employee_id,     e.last_name, e.department_id,
+       d.department_id, d.location_id
+  from employees e left outer join departments d
+    on (e.employee_id = d.department_id)
+;
+select e.employee_id,     e.last_name, e.department_id,
+       d.department_id, d.location_id
+  from employees e right outer join departments d
+    on (e.employee_id = d.department_id)
+;
+select e.employee_id,     e.last_name, e.department_id,
+       d.department_id, d.location_id
+  from employees e full outer join departments d
+    on (e.employee_id = d.department_id)
+;
+select last_name, department_name
+  from employees
+ cross join departments
+;
+-- 5.1Exercicios Criar uma consulta que gera os endereços de todos os departamentos
+-- Use a tabela locations e countries
+-- Mostre o ID do local, o endereço, a cidade, o estado e o país na saída
+-- Usar natural Join
+  select  location_id,  street_address, city, state_province,country_name
+  from  locations
+natural join countries
+;
+-- 5.2 Exercicio - Consulta que exiba o sobrenome, numedo de dpto, e o nome do
+-- dpto de todos os funcionarios
+select last_name, department_id, department_name
+  from employees natural join departments
+;
+-- 5.3 Exercicio - Exibir o sobrenome, cargo, o numero do dpto e o nome do dpto
+-- de todos os func que trabalham em toronto
+select last_name, job_id, department_id, department_name
+  from employees natural join departments
+ where location_id = 1800
+;
+-- 5.4 Exercicio sobrenome e numero de func, e o sobrenome dos respectivos gerentes
+--
+select e.last_name empregado, e.employee_id,  m.last_name gerente, m.employee_id
+  from employees e join employees m
+    on (e.manager_id = m.employee_id)
+
+;
+-- 5.5 Exercicio Modifique para mostrar todos inclusive quem nao tem gerente
+-- classificar pelo num d0 funcinario
+select e.last_name , e.employee_id,  m.last_name gerente, m.employee_id
+  from employees e join employees m
+    on (e.manager_id = m.employee_id)
+ order by  e.employee_id
+;
+ -- 5.6 Exiba o sobrenome , os num de depto do funcionario
+ --e os funcionarios que trabalham no mesmo dpto como func especifico
+ select e1.department_id dpto ,e1.last_name empregado , e2.last_name colega
+   from employees e1 join employees e2
+     on (e1.department_id = e2.department_id and e1.employee_id <> e2.employee_id)
+  order by 1,2,3
+;
+-- 5.7 Criar uma consulta para exibir o nome e a data de adminssão
+-- de todos func admitidos após Davies
+select e.last_name sobrenome,  to_char(e.hire_date,'dd  month yyyy') admissao
+  from employees e
+ where e.hire_date > (select d.hire_date
+                        from employees d
+                       where d.last_name ='Davies' )
+ order by  e.hire_date
+
+;
+
